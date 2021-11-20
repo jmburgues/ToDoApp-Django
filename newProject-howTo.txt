@@ -1,0 +1,22 @@
+## FROM:
+https://www.tabnine.com/blog/how-to-create-django-projects-in-pycharm-community-edition/?utm_term=&utm_campaign=&utm_source=adwords&utm_medium=ppc&hsa_acc=4311736126&hsa_cam=14854202152&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gclid=CjwKCAiA7dKMBhBCEiwAO_crFI7WgUgAF1-jtySzxetUA0yeDeLEpHYdSE5d6ONtCoCioeQ472sV5xoCINQQAvD_BwE
+
+Getting Started With Django
+To install Django, create and navigate to your project folder. Boot up your command line (cmd in Windows) and run the following command to create your virtual environment.
+
+python -m venv env
+venv is the command to create your virtual environment in Python. env is your environment name. In theory, env can be called anything you want but for this guide, we’re going to keep to the convention.
+
+This will create an env folder for you with all the scripts and libraries required to run a Python-compatible virtual environment. To activate your virtual environment, run the following command:
+
+env\Scripts\activate
+You will see (env) in your command line in front of your directory. For example:
+
+(env) C:\Documents\python
+Once that is running, you can run the following command to install Django onto your local machine.
+
+pip install django
+You might get a warning to upgrade pip but this is not a requirement to continue. once that is completed, you can now create your first Django project. To do this, use the django-admin command:
+
+django-admin startproject pycharmtut
+You can replace pycharmtut with whatever you want. The above command will create a new Django project with the minimum required files and setup. Before we can run your new Django app? We need to set it up.
