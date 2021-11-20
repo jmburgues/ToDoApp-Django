@@ -1,9 +1,5 @@
-from django.http import HttpResponse
-
-
-def create(request):
-    return HttpResponse('create')
+from django.shortcuts import render
 
 
 def homepage(request):
-    return HttpResponse('homepage')
+    return render(request, 'homepage.html')

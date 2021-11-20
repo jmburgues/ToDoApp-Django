@@ -1,22 +1,117 @@
 ## FROM:
 https://www.tabnine.com/blog/how-to-create-django-projects-in-pycharm-community-edition/?utm_term=&utm_campaign=&utm_source=adwords&utm_medium=ppc&hsa_acc=4311736126&hsa_cam=14854202152&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gclid=CjwKCAiA7dKMBhBCEiwAO_crFI7WgUgAF1-jtySzxetUA0yeDeLEpHYdSE5d6ONtCoCioeQ472sV5xoCINQQAvD_BwE
+## YouTube Course:
+https://www.youtube.com/watch?v=n-FTlQ7Djqc&list=PL4cUxeGkcC9ib4HsrXEYpQnTOTZE1x0uc&index=1
 
-Getting Started With Django
-To install Django, create and navigate to your project folder. Boot up your command line (cmd in Windows) and run the following command to create your virtual environment.
+1) Getting Started With Django
+To install Django, create and navigate to your project folder.
+Boot up your command line (cmd in Windows) and run the following command to create your virtual environment.
 
-python -m venv env
-venv is the command to create your virtual environment in Python. env is your environment name. In theory, env can be called anything you want but for this guide, we’re going to keep to the convention.
+    > python -m venv env
 
-This will create an env folder for you with all the scripts and libraries required to run a Python-compatible virtual environment. To activate your virtual environment, run the following command:
+venv is the command to create your virtual environment in Python.
+env is your environment name. In theory, env can be called anything you want but for this guide,
+we’re going to keep to the convention.
+This will create an env folder for you with all the scripts and libraries required to run a Python-compatible
+virtual environment. To activate your virtual environment, run the following command:
 
-env\Scripts\activate
-You will see (env) in your command line in front of your directory. For example:
+    > env\Scripts\activate
 
-(env) C:\Documents\python
+You will see (env) in your command line in front of your directory. For example: (env) C:\Documents\python
 Once that is running, you can run the following command to install Django onto your local machine.
 
-pip install django
-You might get a warning to upgrade pip but this is not a requirement to continue. once that is completed, you can now create your first Django project. To do this, use the django-admin command:
+    > pip install django
 
-django-admin startproject pycharmtut
-You can replace pycharmtut with whatever you want. The above command will create a new Django project with the minimum required files and setup. Before we can run your new Django app? We need to set it up.
+You might get a warning to upgrade pip but this is not a requirement to continue.
+Once that is completed, you can now create your first Django project. To do this, use the django-admin command:
+
+    > django-admin startproject pycharmtut
+
+You can replace pycharmtut with whatever you want.
+The above command will create a new Django project with the minimum required files and setup.
+Before we can run your new Django app? We need to set it up.
+
+2) URLS and TEMPLATES
+
+    urls.py manage urls routing.
+    create a template folder at root-level called templates.
+
+    a. Add the template directory inside TEMPLATE on settings.py to be recognized:
+        'DIRS': ['templates'],
+    b. add routings on url.py
+    c. add functions on views.py
+
+
+3) APPS
+    a. Create apps inside project to modularize responsibilities
+
+        > python manage.py startapp <app name>
+
+    b. Configure urls.py and views.py for that specific app.
+
+    c. Add a template folder inside app folder.
+
+    d. Add the app name on settings.py in order to be recognized:
+
+            INSTALLED_APPS = [
+            'django.contrib.admin',
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+            'django.contrib.sessions',
+            'django.contrib.messages',
+            'django.contrib.staticfiles',
+            'tasks'
+        ]
+
+4) MIGRATIONS
+
+    Migrate built-in modules already created by django on project start.
+
+        > python manage.py migrate
+
+    Creates a migrations file for our own modules in order to track changes and replicate them into DB
+
+        > python manage.py makemigrations
+
+    Perform the migrations indicated in migration file
+
+        > python manage.py migrate
+
+5) MODELS
+
+    a. Add models inside respective app.
+
+    More info on model types on https://docs.djangoproject.com/en/1.11/ref/models/fields
+
+6) ORM
+
+    Play with ORM functions:
+        a. Open a shell:
+
+            > python manage.py shell
+
+        b. Import the model
+
+            > from task.models import Task
+
+        c. Create object and save it to DB.
+
+            > task = Task()
+            > task.title = test
+            > task.save()
+            > Task.objects.all()  # retrieves all
+
+7) ADMIN PANEL
+
+    a. Create super user
+
+        > python manage.py createsuperuser
+
+        # user: admin, password: 1234
+
+    b. Register wanted apps on admin site. To do this go to admin.py inside app folder. Add the following:
+
+        > from .models import Task
+        > admin.site.register(Task)
+
+        This will make appear a new section in admin site (live web)
