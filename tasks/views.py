@@ -22,8 +22,7 @@ def task_create(request):
     if request.method == 'POST':
         form = forms.CreateTask(request.POST)  # creates a form with data coming from the request
         if form.is_valid():
-            print("save")
-            # save task to DB.
+            form.save()
         return redirect('tasks:list')
     else:
         form = forms.CreateTask()  # creates a form object from tasks/forms.py

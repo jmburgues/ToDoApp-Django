@@ -7,7 +7,7 @@ class Task(models.Model):
     title = models.CharField(max_length=100)
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True)  # automatically populates date when constructed.
-    assigned_to = models.ManyToManyField(User)
+    assigned = models.ManyToManyField(User, default=None)
     IN_PROGRESS = 'IN PROGRESS'
     FINISHED = 'FINISHED'
     STATE_CHOICES = (
