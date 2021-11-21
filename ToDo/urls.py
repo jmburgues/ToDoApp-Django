@@ -19,6 +19,10 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    # regex for paths that start with 'accounts/'
+    # include('accounts.urls') includes the paths declared un accounts/urls.py so they can be matched.
+    # same for tasks
+    url(r'^accounts/', include('accounts.urls')),
     url(r'^tasks/', include('tasks.urls')),
     url(r'^$', views.homepage)
 ]

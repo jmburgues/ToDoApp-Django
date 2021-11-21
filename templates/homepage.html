@@ -10,10 +10,22 @@
     <hr>
 </head>
 <body>
-    <div class="wrapper">
+    <header class="wrapper">
+        <nav>
+            <ul>
+                <li>
+                    <form class="logout-link" action="{% url 'accounts:logout' %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+
         {% block content %}
         {% endblock %}
-    </div>
+
+    </header>
 </body>
 <hr>
 <footer>Thank you for visiting us!</footer>
