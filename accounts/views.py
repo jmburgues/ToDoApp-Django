@@ -29,7 +29,10 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()  # retrieves the user from the valid form
             login(request, user)  # uses imported django built in login to log the user
-            return redirect('tasks:list')
+            if 'next' in request.POST:  # if next value exists un the request method, redirect to that value.
+                return redirect(request.POST.get('next'))
+            else:
+                return redirect('tasks:list')
     else:
         form = AuthenticationForm()
     return render(request, 'accounts/login.html', {'form': form})
