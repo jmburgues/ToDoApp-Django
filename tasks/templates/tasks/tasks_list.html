@@ -1,16 +1,14 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Task List</title>
-    <h1>This is task1</h1>
-    <h1>This is task2</h1>
-    <h1>This is task3</h1>
-</head>
-<body>
+{% extends 'homepage.html' %}
 
-</body>
-</html>
+{% block content %}
+    <div class="tasks">
+        {% for task in tasks %}
+            <div class="task">
+                <h2><a href="#">{{ task.title }}</a></h2>
+                <p>DATE: {{ task.date }}</p>
+                <p>BODY: {{ task.snippet }}</p>
+                <p>STATE: {{ task.state }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
