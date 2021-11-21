@@ -4,10 +4,12 @@
     <div class="tasks">
         {% for task in tasks %}
             <div class="task">
-                <h2><a href="#">{{ task.title }}</a></h2>
-                <p>DATE: {{ task.date }}</p>
-                <p>BODY: {{ task.snippet }}</p>
-                <p>STATE: {{ task.state }}</p>
+                <!-- 'tasks.detail' matches the name in urls.py
+                where tasks is the namespace. task_id matches the variable-->
+                <h2><a href="{% url 'tasks:detail' task_id=task.id %}">{{ task.title }}</a></h2>
+                <p><i>task ID: {{ task.id }} - Created on {{ task.date }}</i></p>
+                <p>{{ task.snippet }}</p>
+                <p>{{ task.state }}</p>
             </div>
         {% endfor %}
     </div>
