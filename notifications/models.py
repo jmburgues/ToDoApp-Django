@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from django.db.models import CASCADE
-
+from django.contrib.auth.models import User
 from tasks.models import Task
 
 
@@ -10,6 +10,18 @@ class Notification(models.Model):
     title = models.CharField(max_length=50)
     reason = models.CharField(max_length=200)
     reporter = models.ForeignKey(Task, on_delete=CASCADE)
+    user = models.ManyToManyField(User, default=None)
+    UNREAD = 'UNREAD'
+    READ = 'READ'
+    STATUS_CHOICES = [
+        (UNREAD, 'Unread'),
+        (READ, 'Read'),
+    ]
+    status = models.CharField(
+        choices=STATUS_CHOICES,
+        default=UNREAD,
+        max_length=12
+    )
     ALERT = 'ALERT'
     IMPORTANT = 'IMPORTANT'
     MUST = 'MUST'
