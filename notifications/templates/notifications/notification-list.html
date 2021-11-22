@@ -1,0 +1,34 @@
+{% extends 'homepage.html' %}
+
+{% block content %}
+<main>
+    <section  class="mb-5">
+         <div class="container">
+              <h2 class="mb-4">Your Notifications</h2>
+              <table class="table table-striped">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Reason</th>
+                    <th scope="col">Reporter</th>
+                    <th scope="col">Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for notification in notifications %}
+                  <tr>
+                    <th scope="row">{{ notification.id }}</th>
+                    <td>{{ notification.title }} </td>
+                    <td>{{ notification.reason }}</td>
+                    <td>{{ notification.reporter }}</td>
+                    <td>{{ notification.type }}</td>
+                    <td><a class="btn btn-success btn-sm">View Details</a></td>
+                  </tr>
+                {% endFor %}
+                </tbody>
+              </table>
+         </div>
+    </section>
+</main>
+{% endblock %}
