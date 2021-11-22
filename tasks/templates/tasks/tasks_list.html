@@ -9,6 +9,11 @@
                 <h2><a href="{% url 'tasks:detail' task_id=task.id %}">{{ task.title }}</a></h2>
                 <p><i>task ID: {{ task.id }} - Created on {{ task.date }}</i></p>
                 <p>{{ task.snippet }}</p>
+                <p>Assigned to:
+                {% for user in task.assigned.all %}
+                {{ user }},
+                {% endfor %}
+                </p>
                 <p>{{ task.state }}</p>
             </div>
         {% endfor %}
