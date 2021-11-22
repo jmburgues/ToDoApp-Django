@@ -22,7 +22,8 @@ class Notification(models.Model):
     ]
     type = models.CharField(
         choices=TYPE_CHOICES,
-        default= ALERT
+        default=ALERT,
+        max_length=12
     )
 
     def __str__(self):

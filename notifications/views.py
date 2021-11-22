@@ -7,11 +7,11 @@ from .models import  Notification
 
 def notification_list(request):
     notifications = Notification.objects.all()
-    return render(request, 'notification/notification-list.html', {'notifications': notifications})
+    return render(request, 'notifications/notification-list.html', {'notifications': notifications})
 
 
 def notification_details(request, notification_id):
     notification = Notification.objects.get(id=notification_id)
-    return render(request, 'notification/notification-details.html', {'notification': notification})
+    return render(request, 'notifications/notification-details.html', {'notification': notification})
 
 

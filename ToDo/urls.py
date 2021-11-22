@@ -24,5 +24,6 @@ urlpatterns = [
     # same for tasks
     url(r'^accounts/', include('accounts.urls')),
     url(r'^tasks/', include('tasks.urls')),
+    url(r'^notifications/', include('notifications.urls')),
     url(r'^$', views.homepage)
 ]
