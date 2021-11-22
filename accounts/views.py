@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 
 """"
 1. if its POST, retrieves forms data and validates it.
@@ -15,7 +15,10 @@ def signup_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            login(request, form.get_user())
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username, password=password)
+            login(request, user)
             return redirect('tasks:list')  # redirects to the url named 'list' inside 'tasks' namespace
     else:
         form = UserCreationForm()
@@ -29,7 +32,10 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()  # retrieves the user from the valid form
             login(request, user)  # uses imported django built in login to log the user
-            return redirect('tasks:list')
+            if 'next' in request.POST:  # if next value exists un the request method, redirect to that value.
+                return redirect(request.POST.get('next'))
+            else:
+                return redirect('tasks:list')
     else:
         form = AuthenticationForm()
     return render(request, 'accounts/login.html', {'form': form})

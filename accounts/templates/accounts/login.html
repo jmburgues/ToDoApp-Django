@@ -6,6 +6,9 @@
     <form class="site-form" action="{% url 'accounts:login' %}" method="post">
         {% csrf_token %} <!-- includes the security token in the form -->
         {{ form }}
+        {% if request.GET.next %} <!-- If request method has a next value (a wanted url where to go)-->
+            <input type="hidden" name="next" value="{{request.GET.next}}"> <!-- we store that value -->
+        {% endif %}
         <input type="submit" value="Login">
     </form>
 {% endblock %}
