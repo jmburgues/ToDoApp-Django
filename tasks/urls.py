@@ -5,6 +5,7 @@ app_name = 'tasks'
 
 urlpatterns = [
     url(r'^$', views.task_list, name='list'),
+    url(r'^json$', views.task_to_json, name='task_list'),
     url(r'^create/$', views.task_create, name='create'),
     # (?P<task_id>[0-9]+) format (?P<VARIABLE>REGEX) specifies the regex for that variable and that will be passed to
     # the view fun. For name='detail' is a name given to reference the URL created dynamically (used on tasks_list.html)

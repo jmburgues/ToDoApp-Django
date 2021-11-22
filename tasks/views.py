@@ -1,12 +1,39 @@
-from django.shortcuts import render, redirect
-from .models import Task
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.core import serializers
+from .models import Task
+from django.contrib.auth.models import User
 from . import forms
+import json
+from rest_framework import serializers
+
+
+# Necessary classes to serialize nested objects
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ['username']
+        model = User
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    assigned = UserSerializer(read_only=True, many=True)
+
+    class Meta:
+        fields = '__all__'
+        model = Task
 
 
 def task_list(request):
     tasks = Task.objects.all()  # we can append here .order_by('date') or any other.
     return render(request, 'tasks/tasks_list.html', {'tasks': tasks})
+
+
+def task_to_json(request):  # json endpoint for all tasks
+    if request.method == 'GET':
+        tasks = Task.objects.all()
+        data = TaskSerializer(tasks, many=True).data
+        return HttpResponse(json.dumps(data))  # json.dump converts dictionary to json
 
 
 def task_details(request, task_id):
