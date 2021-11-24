@@ -1,11 +1,13 @@
 {% extends 'homepage.html' %}
 
 {% block content %}
+<div class="mb-3" style="margin-left: 5em; width: 50em;">
     <h1>Sign up</h1>
     <!-- 'accounts:signup' refer to 'namespace:name' in urls.py -->
     <form class="site-form" action="{% url 'accounts:signup' %}" method="post">
         {% csrf_token %} <!-- includes the security token in the form -->
         {{ form }}
-        <input type="submit" value="Signup">
+        <input type="submit" class="btn btn-primary" value="Signup">
     </form>
+</div>
 {% endblock %}

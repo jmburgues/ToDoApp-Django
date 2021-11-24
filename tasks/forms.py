@@ -10,6 +10,14 @@ class CreateTask(forms.ModelForm):
         model = models.Task
         fields = ['title', 'body', 'tags', 'state', 'assigned']
 
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'body': forms.Textarea(attrs={'class': 'form-control'}),
+            'tags': forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
+            'state': forms.Select(attrs={'class': 'form-control'}),
+            'assigned': forms.SelectMultiple(attrs={'class': 'form-control'}),
+        }
+
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
         widget=forms.CheckboxSelectMultiple

@@ -8,3 +8,6 @@ class CreateTag(forms.ModelForm):
         model = models.Tag
         fields = ['title']
 
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+        }
