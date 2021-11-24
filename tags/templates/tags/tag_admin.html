@@ -1,0 +1,23 @@
+{% extends 'homepage.html' %}
+
+{% block content %}
+    <div class="create-tag">
+        <h2>Create a New TAG</h2>
+        <form class="site-form" action="{% url 'tags:admin' %}" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Create">
+        </form>
+    </div>
+
+    <div class="delete-tag">
+        <h2>Delete TAGs</h2>
+        <ul>
+        {% for tag in tags %}
+            <li>
+                <a href="{% url 'tags:delete' tag_id=tag.id %}">{{ tag }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

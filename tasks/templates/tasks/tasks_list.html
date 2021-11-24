@@ -32,6 +32,12 @@
                                 <a href="{% url 'tasks:change_state' task_id=task.id %}">Finish</a>
                                 <a href="{% url 'tasks:delete' task_id=task.id %}">Delete</a>
                             </div>
+                                tags:
+                                {% with tags=task.tags.all %}
+                                    {% for tag in tags %}
+                                        <a href="{% url 'tasks:filter' id=tag.id %}">{{ tag }}</a>
+                                    {% endfor %}
+                                {% endwith %}
                         </div>
                         {% endif %}
                     </td>
@@ -69,9 +75,17 @@
                             </p>
                             <p>{{ task.state }}</p>
                             <div>
+                                <a href="{% url 'tasks:update' task_id=task.id %}">Update</a>
                                 <a href="{% url 'tasks:change_state' task_id=task.id %}">Not finished</a>
                                 <a href="{% url 'tasks:delete' task_id=task.id %}">Delete</a>
                             </div>
+                                tags:
+                                {% with tags=task.tags.all %}
+                                    {% for tag in tags %}
+                                        <a href="{% url 'tasks:filter' id=tag.id %}">{{ tag }}</a>
+                                    {% endfor %}
+                                {% endwith %}
+
                         </div>
                         {% endif %}
                     </td>

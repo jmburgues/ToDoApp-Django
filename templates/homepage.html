@@ -25,11 +25,12 @@
             </form>
         </li>
         <li>Hi {{ user.username }}!</li>
-        <li><a class="highlight" href="{% url 'tasks:create' %}">CREATE</a> </li>
+        <li><a class="highlight" href="{% url 'tasks:create' %}">CREATE TASK</a> </li>
         {% else %}
         <li><a href="{% url 'accounts:login' %}">Login</a></li>
         <li><a href="{% url 'accounts:signup' %}">Signup</a></li>
         {% endif %}
+        <li><a href="{% url 'tags:admin' %}">TAGs</a></li>
     </ul>
 </nav>
 </header>

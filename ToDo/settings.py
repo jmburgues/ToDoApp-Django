@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tasks',
     'accounts',
-    'notifications'
+    'notifications',
+    'tags'
 ]
 
 MIDDLEWARE = [
