@@ -48,20 +48,16 @@ class Notification(models.Model):
             return self.body
 
     @staticmethod
-    def notify_user(task, reason, user_id):
-
-        users = User.objects.exclude(id=user_id)
-        user = User.objects.get(id=1)
+    def notify_user(task, reason):
 
         notification = Notification()
         notification.title = task.title
         notification.reason = reason
         notification.reporter = task
         notification.save()
-        for u in users:
+        for u in task.assigned.all():
             notification.users.add(u)
 
-        print(notification)
 
 
 

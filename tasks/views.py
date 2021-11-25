@@ -14,7 +14,6 @@ from notifications.models import Notification
 
 
 class TagSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Tag
         fields = '__all__'
@@ -38,20 +37,48 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 def task_list(request):
-    tasks = Task.objects.all().order_by('date')  # we can append here .order_by('date') or any other.
-    return render(request, 'tasks/tasks_list.html', {'tasks': tasks})
+    tasks = Task.objects.prefetch_related('assigned')
+    assigned_tasks = []
+    for task in tasks:
+        for user in task.assigned.all():
+            if user.id == request.user.id:
+                assigned_tasks.append(task)
+
+    notifications = Notification.objects.prefetch_related('users')
+    count = 0
+    for notification in notifications:
+        for user in notification.users.all():
+            if user.id == request.user.id:
+                if notification.status == 'UNREAD':
+                    count += 1
+
+    return render(request, 'tasks/tasks_list.html', {'tasks': tasks, 'count': count})
 
 
 def task_filter(request, id):
-    tasks = Task.objects.all().order_by('date')
-    TaskList = []
+    tasks = Task.objects.prefetch_related('assigned').order_by('date')
+    assigned_tasks = []
+    filteredList = []
     for task in tasks:
+        for user in task.assigned.all():
+            if user.id == request.user.id:
+                assigned_tasks.append(task)
+
+    for task in assigned_tasks:
         tags = task.tags.all()
         for tag in tags:
             if int(tag.id) == int(id):
-                TaskList.append(task)
+                filteredList.append(task)
 
-    return render(request, 'tasks/tasks_list.html', {'tasks': TaskList})
+    notifications = Notification.objects.prefetch_related('users')
+    count = 0
+    for notification in notifications:
+        for user in notification.users.all():
+            if user.id == request.user.id:
+                if notification.status == 'UNREAD':
+                    count += 1
+
+    return render(request, 'tasks/tasks_list.html', {'tasks': filteredList, 'count': count})
 
 
 def task_to_json(request):  # json endpoint for all tasks
@@ -72,10 +99,13 @@ def task_details(request, task_id):
 def task_change_state(request, task_id):
     task = Task.objects.get(id=task_id)
     if task.state == task.IN_PROGRESS:
+        Notification.notify_user(task, "FINISHED")
         task.state = task.FINISHED
     else:
         task.state = task.IN_PROGRESS
+        Notification.notify_user(task, "IN PROGRESS")
     task.save()
+
     return redirect('tasks:list')
 
 
@@ -83,6 +113,7 @@ def task_change_state(request, task_id):
 def task_delete(request, task_id):
     task = Task.objects.get(id=task_id)
     task.delete()
+    Notification.notify_user(task, "DELETED")
     return redirect('tasks:list')
 
 
@@ -98,6 +129,7 @@ def task_update(request, task_id):
             tagIds = request.POST.getlist('tags')
             obj.tags.set(tagIds)
             obj.save()
+            Notification.notify_user(task, "UPDATED")
             return redirect('tasks:list')
     else:
         task = Task.objects.get(id=task_id)
@@ -115,13 +147,12 @@ def task_update(request, task_id):
 # login decorator prevents unauthenticated users
 @login_required(login_url="/accounts/login/")
 def task_create(request):
-    print(request.POST)
     if request.method == 'POST':
-
         form = forms.CreateTask(request.POST)  # creates a form with data coming from the request
         if form.is_valid():
             task = form.save()
-            Notification.notify_user(task, "CREATED", request.POST['user_id'])
+            print(request.user.id)
+            Notification.notify_user(task, "CREATED")
         return redirect('tasks:list')
     else:
         form = forms.CreateTask()  # creates a form object from tasks/forms.py

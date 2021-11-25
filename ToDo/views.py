@@ -1,10 +1,7 @@
 from django.shortcuts import render
-from tasks.models import Task
+from notifications.models import Notification
 
 
 def homepage(request):
-
-    notifications = Notification.objects.all()
-
-    return render(request, 'homepage.html', {'notifications': notifications})
+    return render(request, 'homepage.html', {'notifications': count})
 
