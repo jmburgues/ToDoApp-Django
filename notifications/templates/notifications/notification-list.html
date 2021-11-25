@@ -1,7 +1,7 @@
 {% extends 'homepage.html' %}
 
 {% block content %}
-<main>
+<main class="py-5">
     <section  class="mb-5">
          <div class="container">
               <h2 class="mb-4">Your Notifications</h2>
@@ -11,19 +11,25 @@
                     <th scope="col">#</th>
                     <th scope="col">Title</th>
                     <th scope="col">Reason</th>
-                    <th scope="col">Reporter</th>
+                    <th scope="col">Task</th>
                     <th scope="col">Type</th>
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
                 {% for notification in notifications %}
                   <tr>
-                    <th scope="row">{{ notification.id }}</th>
-                    <td>{{ notification.title }} </td>
-                    <td>{{ notification.reason }}</td>
-                    <td>{{ notification.reporter }}</td>
-                    <td>{{ notification.type }}</td>
-                    <td><a class="btn btn-success btn-sm">View Details</a></td>
+                    <th  scope="row">{{ notification.id }}</th>
+                    <td class="text-center" scope="row">{{ notification.title }} </td>
+                    <td class="text-center" scope="row">{{ notification.reason }}</td>
+                    <td class="text-center" scope="row">{{ notification.reporter }}</td>
+                    <td class="text-center" scope="row">{{ notification.type }}</td>
+                    <td class="text-center" scope="row">
+                        <a class="btn btn-success btn-sm" href="{% url 'notifications:detail' notification_id=notification.id %}">View Details</a>
+                    </td>
+                    <td><a class="btn btn-danger btn-sm" href="{% url 'notifications:delete' notification_id=notification.id %}">Delete</a></td>
+
+
                   </tr>
                 {% endfor %}
                 </tbody>

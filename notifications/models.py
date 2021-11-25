@@ -10,7 +10,7 @@ class Notification(models.Model):
     title = models.CharField(max_length=50)
     reason = models.CharField(max_length=200)
     reporter = models.ForeignKey(Task, on_delete=CASCADE)
-    user = models.ManyToManyField(User, default=None)
+    users = models.ManyToManyField(User)
     UNREAD = 'UNREAD'
     READ = 'READ'
     STATUS_CHOICES = [
@@ -46,5 +46,37 @@ class Notification(models.Model):
             return self.body[0:20] + ' (...)'
         else:
             return self.body
+
+    @staticmethod
+    def notify_user(task, reason, user_id):
+
+        users = User.objects.exclude(id=user_id)
+        user = User.objects.get(id=1)
+
+        notification = Notification()
+        notification.title = task.title
+        notification.reason = reason
+        notification.reporter = task
+        notification.save()
+        for u in users:
+            notification.users.add(u)
+
+        print(notification)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

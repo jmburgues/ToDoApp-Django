@@ -1,9 +1,10 @@
 {% extends 'homepage.html' %}
 
 {% block content %}
+<main class="py-5">
     <h1>Log in</h1>
     <!-- 'accounts:login' refer to 'namespace:name' in urls.py -->
-    <form class="site-form" action="{% url 'accounts:login' %}" method="post">
+    <form class="form-group" action="{% url 'accounts:login' %}" method="post">
         {% csrf_token %} <!-- includes the security token in the form -->
         {{ form }}
         {% if request.GET.next %} <!-- If request method has a next value (a wanted url where to go)-->
@@ -11,4 +12,6 @@
         {% endif %}
         <input type="submit" value="Login">
     </form>
+</main>
+
 {% endblock %}
