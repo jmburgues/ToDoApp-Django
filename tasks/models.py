@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from tags.models import Tag
 
 
 # more info on model types on https://docs.djangoproject.com/en/1.11/ref/models/fields
@@ -8,6 +9,7 @@ class Task(models.Model):
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True)  # automatically populates date when constructed.
     assigned = models.ManyToManyField(User, default=None)
+    tags = models.ManyToManyField(Tag, blank=True)
     IN_PROGRESS = 'IN PROGRESS'
     FINISHED = 'FINISHED'
     STATE_CHOICES = (
@@ -30,3 +32,6 @@ class Task(models.Model):
             return self.body[0:40] + ' (...)'
         else:
             return self.body
+
+
+

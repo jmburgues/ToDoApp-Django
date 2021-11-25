@@ -4,6 +4,11 @@
     <div class="task-detail">
         <div class="article">
             <h2>{{ task.id }} - {{ task.title }}</h2>
+            <p>Assigned to:
+                {% for user in task.assigned.all %}
+                {{ user }},
+                {% endfor %}
+            </p>
             <p>{{ task.body }}</p>
             <p>Created on {{ task.date }}</p>
             <p>State: {{ task.state }}</p>

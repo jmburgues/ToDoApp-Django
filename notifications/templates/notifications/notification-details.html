@@ -1,0 +1,51 @@
+{% extends 'homepage.html' %}
+{% block content %}
+<main class="py-5">
+    <section class="mb-5">
+      <div class="container">
+          <h3 class="mb-3">Notification Nr  {{ notification.id }}</h3>
+          <div class="bg-light p-4">
+              <div class="row">
+                      <div class="col-lg-4">
+                          <label for=""> Notification Type :</label>
+                      </div>
+                      <div class="col-lg-4">
+                          <label for="">Reason</label>
+                      </div>
+                      <div class="col-lg-4 my-0">
+                          <label for="">Type</label>
+                      </div>
+                      <div class="col-lg-4">
+                            {{ notification.title }}
+                      </div>
+                      <div class="col-lg-4">
+                                {{ notification.reason }}
+                      </div>
+                      <div class="col-lg-4">
+                            {{ notification.type }}
+                      </div>
+                  <div>
+                      <div class="col-lg-4">
+
+                          <label class =""for="">Task</label>
+                                  <div class="task-detail">
+                                            <div class="article">
+                                                <h3>{{ task.id }} - {{ task.title }}</h3>
+                                                <p>Assigned to:
+                                                    {% for user in task.assigned.all %}
+                                                    {{ user }},
+                                                    {% endfor %}
+                                                </p>
+                                                <p>{{ task.body }}</p>
+                                                <p>Created on {{ task.date }}</p>
+                                                <p>State: {{ task.state }}</p>
+                                            </div>
+                                  </div>
+                      </div>
+                 </div>
+              </div>
+          </div>
+      </div>
+    </section>
+</main>
+{%endblock%}

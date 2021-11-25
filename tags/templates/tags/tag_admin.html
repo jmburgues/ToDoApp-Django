@@ -1,0 +1,26 @@
+{% extends 'homepage.html' %}
+
+{% block content %}
+<br>
+<div class="mb-3" style="margin-left: 5em; padding-top 10em; width: 50em;">
+    <div class="create-tag">
+        <h2>Create a New TAG</h2>
+        <form class="site-form" action="{% url 'tags:admin' %}" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit"  class="btn btn-primary" value="Create">
+        </form>
+    </div>
+
+    <div class="delete-tag">
+        <h2>Delete TAGs</h2>
+        <ul>
+        {% for tag in tags %}
+            <li>
+                <a class="text-danger" href="{% url 'tags:delete' tag_id=tag.id %}">{{ tag }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
