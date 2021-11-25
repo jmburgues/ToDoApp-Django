@@ -11,6 +11,7 @@ urlpatterns = [
     # same for tasks
     url(r'^accounts/', include('accounts.urls')),
     url(r'^tasks/', include('tasks.urls')),
+    url(r'^tags/', include('tags.urls')),
     url(r'^notifications/', include('notifications.urls')),
     url(r'^$', task_views.task_list, name="home")
 ]

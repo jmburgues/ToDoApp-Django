@@ -1,12 +1,14 @@
 {% extends 'homepage.html' %}
 
 {% block content %}
-    <div class="create-article">
+<br>
+    <div class="mb-3" style="margin-left: 5em; width: 50em;">
         <h2>Create a New Task</h2>
-        <form class="site-form" action="{% url 'tasks:create' %}" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Create">
+        <form action="{% url 'tasks:create' %}" method="POST">
+
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" class="btn btn-primary" value="Create">
         </form>
     </div>
 {% endblock %}
