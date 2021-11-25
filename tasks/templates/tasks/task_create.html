@@ -1,12 +1,15 @@
 {% extends 'homepage.html' %}
 
 {% block content %}
-    <div class="create-article">
-        <h2>Create a New Task</h2>
-        <form class="site-form" action="{% url 'tasks:create' %}" method="POST">
+<main class="py-5">
+    <div class="container">
+        <h2 class="mb-3">Create a New Task</h2>
+        <form class="bg-light p-4" action="{% url 'tasks:create' %}" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Create">
+            <input class="btn btn-primary btn-lg" type="submit" value="Create">
+            <input class="form-control form-control-ml" type="hidden" name="user_id" value="{{user.id}}">
         </form>
     </div>
+</main>
 {% endblock %}

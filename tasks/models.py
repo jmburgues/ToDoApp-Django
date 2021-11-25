@@ -31,13 +31,5 @@ class Task(models.Model):
         else:
             return self.body
 
-    def notify_user(self, reason, user_id):
-        users = self.assigned.filter(id != user_id)
-        notification = Notification()
-        notification.title = self.title
-        notification.reason = reason
-        notification.reporter = self.id
-        for u in users:
-            u.notification.objects.all().add(notfication)
-            u.save()
+
 

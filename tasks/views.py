@@ -9,6 +9,7 @@ import json
 from rest_framework import serializers
 from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
+from notifications.models import Notification
 
 
 # Necessary classes to serialize nested objects
@@ -89,10 +90,13 @@ def task_update(request, task_id):
 # login decorator prevents unauthenticated users
 @login_required(login_url="/accounts/login/")
 def task_create(request):
+    print(request.POST)
     if request.method == 'POST':
+
         form = forms.CreateTask(request.POST)  # creates a form with data coming from the request
         if form.is_valid():
-            form.save()
+            task = form.save()
+            Notification.notify_user(task, "CREATED", request.POST['user_id'])
         return redirect('tasks:list')
     else:
         form = forms.CreateTask()  # creates a form object from tasks/forms.py
