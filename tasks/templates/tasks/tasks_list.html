@@ -1,5 +1,6 @@
 {% extends 'homepage.html' %}
 {% block content %}
+<main class="py-5">
 <div class="row">
     <div class="child table-responsive col-md-6">
         <table>
@@ -18,7 +19,7 @@
                         <div class="task">
                             <!-- 'tasks.detail' matches the name in urls.py
                             where tasks is the namespace. task_id matches the variable-->
-                            <h2><a href="{% url 'tasks:detail' task_id=task.id %}">{{ task.title }}</a></h2>
+                            <h2><a class="text-info" href="{% url 'tasks:detail' task_id=task.id %}">{{ task.title }}</a></h2>
                             <p><i>task ID: {{ task.id }} - Created on {{ task.date }}</i></p>
                             <p>{{ task.snippet }}</p>
                             <p>Assigned to:
@@ -28,10 +29,16 @@
                             </p>
                             <p>{{ task.state }}</p>
                             <div>
-                                <a href="{% url 'tasks:update' task_id=task.id %}">Update</a>
-                                <a href="{% url 'tasks:change_state' task_id=task.id %}">Finish</a>
-                                <a href="{% url 'tasks:delete' task_id=task.id %}">Delete</a>
+                                <a class="badge bg-secondary" href="{% url 'tasks:update' task_id=task.id %}">Update</a>
+                                <a class="badge bg-secondary" href="{% url 'tasks:change_state' task_id=task.id %}">Finished</a>
+                                <a class="badge bg-danger" href="{% url 'tasks:delete' task_id=task.id %}">Delete</a>
                             </div>
+                                tags:
+                                {% with tags=task.tags.all %}
+                                    {% for tag in tags %}
+                                        <span class="badge rounded-pill bg-warning text-dark"><a href="{% url 'tasks:filter' id=tag.id %}">{{ tag }}</a></span>
+                                    {% endfor %}
+                                {% endwith %}
                         </div>
                         {% endif %}
                     </td>
@@ -69,9 +76,17 @@
                             </p>
                             <p>{{ task.state }}</p>
                             <div>
-                                <a href="{% url 'tasks:change_state' task_id=task.id %}">Not finished</a>
-                                <a href="{% url 'tasks:delete' task_id=task.id %}">Delete</a>
+                                <a class="badge bg-secondary" href="{% url 'tasks:update' task_id=task.id %}">Update</a>
+                                <a class="badge bg-secondary" href="{% url 'tasks:change_state' task_id=task.id %}">Not finished</a>
+                                <a class="badge bg-danger" href="{% url 'tasks:delete' task_id=task.id %}">Delete</a>
                             </div>
+                                tags:
+                                {% with tags=task.tags.all %}
+                                    {% for tag in tags %}
+                                        <span class="badge rounded-pill bg-warning text-dark"><a href="{% url 'tasks:filter' id=tag.id %}">{{ tag }}</a></span>
+                                    {% endfor %}
+                                {% endwith %}
+
                         </div>
                         {% endif %}
                     </td>
@@ -83,4 +98,5 @@
         </table>
     </div>
 </div>
+</main>
 {% endblock %}

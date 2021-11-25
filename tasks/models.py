@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from tags.models import Tag
 
 
 # more info on model types on https://docs.djangoproject.com/en/1.11/ref/models/fields
@@ -8,6 +9,7 @@ class Task(models.Model):
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True)  # automatically populates date when constructed.
     assigned = models.ManyToManyField(User, default=None)
+    tags = models.ManyToManyField(Tag, blank=True)
     IN_PROGRESS = 'IN PROGRESS'
     FINISHED = 'FINISHED'
     STATE_CHOICES = (
@@ -31,13 +33,5 @@ class Task(models.Model):
         else:
             return self.body
 
-    def notify_user(self, reason, user_id):
-        users = self.assigned.filter(id != user_id)
-        notification = Notification()
-        notification.title = self.title
-        notification.reason = reason
-        notification.reporter = self.id
-        for u in users:
-            u.notification.objects.all().add(notfication)
-            u.save()
+
 

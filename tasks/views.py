@@ -3,12 +3,22 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.core import serializers as deserialize
 from .models import Task
+from tags.models import Tag
 from django.contrib.auth.models import User
 from . import forms
 import json
 from rest_framework import serializers
 from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
+from notifications.models import Notification
+
+
+class TagSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tag
+        fields = '__all__'
+        model = Tag
 
 
 # Necessary classes to serialize nested objects
@@ -20,6 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     assigned = UserSerializer(read_only=True, many=True)
+    tags = TagSerializer(read_only=True, many=True)
 
     class Meta:
         fields = '__all__'
@@ -29,6 +40,18 @@ class TaskSerializer(serializers.ModelSerializer):
 def task_list(request):
     tasks = Task.objects.all().order_by('date')  # we can append here .order_by('date') or any other.
     return render(request, 'tasks/tasks_list.html', {'tasks': tasks})
+
+
+def task_filter(request, id):
+    tasks = Task.objects.all().order_by('date')
+    TaskList = []
+    for task in tasks:
+        tags = task.tags.all()
+        for tag in tags:
+            if int(tag.id) == int(id):
+                TaskList.append(task)
+
+    return render(request, 'tasks/tasks_list.html', {'tasks': TaskList})
 
 
 def task_to_json(request):  # json endpoint for all tasks
@@ -72,6 +95,8 @@ def task_update(request, task_id):
             obj = form.save(commit=False)
             userIds = request.POST.getlist('assigned')
             obj.assigned.set(userIds)
+            tagIds = request.POST.getlist('tags')
+            obj.tags.set(tagIds)
             obj.save()
             return redirect('tasks:list')
     else:
@@ -81,7 +106,8 @@ def task_update(request, task_id):
             'title': task.title,
             'body': task.body,
             'state': task.state,
-            'assigned': task.assigned.all()
+            'assigned': task.assigned.all(),
+            'tags': task.tags.all(),
         })  # creates a form object from tasks/forms.py
     return render(request, 'tasks/task_update.html', {'form': form, 'task': task})
 
@@ -89,10 +115,13 @@ def task_update(request, task_id):
 # login decorator prevents unauthenticated users
 @login_required(login_url="/accounts/login/")
 def task_create(request):
+    print(request.POST)
     if request.method == 'POST':
+
         form = forms.CreateTask(request.POST)  # creates a form with data coming from the request
         if form.is_valid():
-            form.save()
+            task = form.save()
+            Notification.notify_user(task, "CREATED", request.POST['user_id'])
         return redirect('tasks:list')
     else:
         form = forms.CreateTask()  # creates a form object from tasks/forms.py
